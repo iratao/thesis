@@ -1,0 +1,35 @@
+/* 
+    Document   : clothes
+    Created on : Feb 23, 2014, 5:49:35 PM
+    Author     : taoyurong
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.items {
+	list-style: none;
+	padding-top: 20px;
+        padding-left: 0;
+	margin: 0 auto;
+	text-align: left;
+	width: 100%;
+}
+
+.items li {
+	display: inline-block;
+	vertical-align: top;
+	height: 250px;
+}
+
+.items li img{
+	width: 150px;
+}
+
+.items-panel {
+    text-align: center;
+}
+
