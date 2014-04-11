@@ -135,6 +135,172 @@ class Context_analyser_model extends CI_Model {
         return $mynum;
     }
     
+    public function insert_survey_result($gender_id, $cid, $fid, $vid, $influence){
+        $data = array(
+            'gender' => $gender_id,
+            'cid_new' => $cid,
+            'fid' => $fid,
+            'vid' => $vid,
+            'influence' => $influence
+        );
+        $this->db->insert('survey', $data);
+    }
+    
+    public function get_factor_name($fid){
+        $query = $this->db->query("SELECT factor FROM context_factor WHERE id = $fid;");
+        return $query->row()->factor;
+    }
+    
+    public function get_category_new_id($category, $gender){
+        $query = $this->db->query("SELECT id FROM category_new WHERE name = '$category' AND gender = $gender;");
+        return $query->row()->id;
+    }
+    
+    public function get_context_value_id($value){
+        $query = $this->db->query("SELECT id FROM context_value WHERE value = '$value';");
+        return $query->row()->id;
+    }
+    
+    public function get_question($fid, $value){
+        $factor = $this->get_factor_name($fid);
+        switch ($factor){
+            case 'budget':
+                $question = "Imagine that you are a " . $value . ".";
+                break;
+            case 'time of the day':
+                $question = "Imagine that you are shopping in the " . $value . ".";
+                break;
+            case 'day of the week':
+                $question = "Imagine that you are shopping at " . $value . ".";
+                break;
+            case 'distance':
+                $question = "Imagine that the clothes recommended is " . $value . ".";
+                break;
+            case 'knowledge about the clothes':
+                $question = "Imagine that you have " . $value . ".";
+                break;
+            case 'crowdedness':
+                $question = "Imagine that the shop is " . $value . ".";
+                break;
+            case 'intent of purchasing':
+                $question = "Imagine that you want to buy the clothes for $value purpose. ";
+                break;
+            case 'companion':
+                $question = "Imagine that you are " . $value . ".";
+                break;
+            case 'weather':
+                $question = "Imagine that the weather is " . $value . ".";
+                break;
+            case 'mood':
+                $question = "Imagine that you are feeling " . $value . ".";
+                break;
+            case 'season':
+                $question = "Imagine the season is " . $value . ".";
+                break;
+            case 'transport':
+                $question = "Imagine you go shopping by " . $value . ".";
+                break;
+            case 'temperature':
+                $question = "Imagine the temperature is " . $value . ".";
+                break;
+            case 'time available':
+                $question = "Imagine your time available is " . $value . ".";
+                break;
+            default:
+                $question = "question1";
+                break;
+            
+        }
+        return $question;
+    }
+    
+    public function get_image_url($category, $gender){
+        if($gender == Context_analyser_model::WOMEN){
+            switch($category){
+                case "Tops": 
+                    $image_url = base_url('img/women/tops.png');
+                    break;
+                case "Dresses":
+                    $image_url = base_url('img/women/dresses.png');
+                    break;
+                case "Lingerie & Nightwear":
+                    $image_url = base_url('img/women/nightwear.png');
+                    break;
+                case "Jumpers & Cardigans":
+                    $image_url = base_url('img/women/jumpers.png');
+                    break;
+                case "Trousers & Leggings":
+                    $image_url = base_url('img/women/trousers.png');
+                    break;
+                case "Coats":
+                    $image_url = base_url('img/women/coats.png');
+                    break;
+                case "Blouses & Tunics":
+                    $image_url = base_url('img/women/blouses.png');
+                    break;
+                case "Jackets":
+                    $image_url = base_url('img/women/jackets.png');
+                    break;
+                case "Skirts":
+                    $image_url = base_url('img/women/skirts.png');
+                    break;
+                case "Jeans":
+                    $image_url = base_url('img/women/jeans.png');
+                    break;
+                case "Tights & Socks":
+                    $image_url = base_url('img/women/socks.png');
+                    break;
+                case "Swimwear":
+                    $image_url = base_url('img/women/swimwear.png');
+                    break;
+                default:
+                    $image_url = "img/placeholder1.jpg";
+                    break;
+            }
+        }else if($gender == Context_analyser_model::MEN){
+            switch($category){
+                case "T-Shirts":
+                    $image_url = base_url('img/men/tshirts.png');
+                    break;
+                case "Shirts":
+                    $image_url = base_url('img/men/shirts.png');
+                    break;
+                case "Jackets":
+                    $image_url = base_url('img/men/jackets.png');
+                    break;
+                case "Underwear":
+                    $image_url = base_url('img/men/underwear.png');
+                    break;
+                case "Trousers & Chinos":
+                    $image_url = base_url('img/men/trousers.png');
+                    break;
+                case "Jumpers & Cardigans":
+                    $image_url = base_url('img/men/jumpers.png');
+                    break;
+                case "Jeans":
+                    $image_url = base_url('img/men/jeans.png');
+                    break;
+                case "Socks":
+                    $image_url = base_url('img/men/socks.png');
+                    break;
+                case "Suits & Ties":
+                    $image_url = base_url('img/men/suits.png');
+                    break;
+                case "Coats":
+                    $image_url = base_url('img/men/coats.png');
+                    break;
+                case "Swimwear":
+                    $image_url = base_url('img/men/swimwear.png');
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        return $image_url;  
+        
+    }
+    
     public function get_ran_context_factor_id(){
         // Make sure that ids in table context_factor is continuous and is from 1 to max;
         $query = $this->db->query("SELECT COUNT(*) AS num FROM context_factor;");
